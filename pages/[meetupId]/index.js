@@ -25,6 +25,8 @@ const MeetupDetails = (props) => {
 // paths повинні містити всі можливі варіанти ідентифікаторів
 // fallback: false означає, что якщо ідентифікатора не має в paths то буде 404
 // fallback true означає nextJs при запросі динамічно сгенерує сторінку
+// спочатку це буде пуста сторінка, коли сгенерує то підгрузить
+// 'blocking' означає що нічого не буде відображено допоки сторінка не буде попередньо сгенерована
 export const getStaticPaths = async () => {
   const client = await MongoClient.connect(
     'mongodb+srv://yak1:Yakimo2883@cluster0.tomul.mongodb.net/?retryWrites=true&w=majority'
@@ -44,7 +46,7 @@ export const getStaticPaths = async () => {
   // вложенний обьект має шдетифікатор meetupId та дорівнює кожному id з массиву meetups
   // meetupId назва папки з дінамічними сторінками
   return {
-    fallback: false,
+    fallback: 'blocking',
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
